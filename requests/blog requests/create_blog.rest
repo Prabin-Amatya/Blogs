@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IndoYXRldmVyIiwiaWQiOiI2NmQ1YmIxZjk5MjdkMzM2YTU4Njc5ODUiLCJpYXQiOjE3MjUyODc5ODYsImV4cCI6MTcyNTI5MTU4Nn0.mjLixsA38bvgiKT77-7Mn7osmz7IMDstz5xLeHBm5ZY
+
+{
+    "title": "who knows",
+    "author": "no idea",
+    "url": "/api/blogs/qualia_the_purple",
+    "likes": 86876,
+    "userId": "66d5bb1f9927d336a5867985"
+}

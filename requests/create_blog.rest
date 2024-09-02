@@ -1,9 +1,0 @@
-POST http://localhost:3001/api/blogs
-Content-Type: application/json
-
-{
-    "title": "ttttttt",
-    "author": "some idea",
-    "url": "/api/blogs/qualia_the_purple",
-    "likes": 86876
-}

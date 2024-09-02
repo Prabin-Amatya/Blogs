@@ -1,4 +1,5 @@
 var _ = require("lodash")
+var logger = require('../utils/logger')
 
 const total_likes = (blogs) =>
 {
@@ -32,7 +33,7 @@ const most_blogs_author = (blogs) =>
             }))
         .orderBy('Count','desc')
         .value()
-    console.log(grouped)
+    logger.info(grouped)
     return grouped[0]
 }
 
@@ -51,7 +52,7 @@ const most_liked_author = (blogs) =>
             .orderBy('Likes','desc')
             .value()
 
-        console.log(grouped)
+        logger.info(grouped)
         return grouped[0]
     }
 
