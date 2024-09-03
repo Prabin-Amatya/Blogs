@@ -62,6 +62,49 @@ describe("Adding a new user", ()=>{
         assert.strictEqual(usersAtEnd.length, usersAtStart.length)
         assert(response.body.error.includes("expected 'username' to be unique"))
     })
+
+    test("creation fails with a username less than 3 letters", async() =>{
+
+        const usersAtStart = helper.usersInDb()
+
+        const new_user = {
+            userName:"ro",
+            name: "test",
+            password: "password"
+        }
+
+        const response = await api
+                            .post('/api/users')
+                            .send(new_user)
+                            .expect(400)
+
+        const usersAtEnd = helper.usersInDb()
+
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+        assert(response.body.error.includes("Users validation failed: userName: Username needs more than 3 characters"))
+    })
+
+    test("creation fails with a pasword less than 3 letters", async() =>{
+
+        const usersAtStart = helper.usersInDb()
+
+        const new_user = {
+            userName:"root",
+            name: "test",
+            password: "pa"
+        }
+
+        const response = await api
+                            .post('/api/users')
+                            .send(new_user)
+                            .expect(400)
+
+        const usersAtEnd = helper.usersInDb()
+
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+        assert(response.body.error.includes("Password needs more than 3 character"))
+    })
+
 })
 
 

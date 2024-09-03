@@ -1,0 +1,3 @@
+DELETE http://localhost:3001/api/blogs/66d5bc611c586d555a273535
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IndoYXRldmVyIiwiaWQiOiI2NmQ1YmIxZjk5MjdkMzM2YTU4Njc5ODUiLCJpYXQiOjE3MjUzNjU1MjEsImV4cCI6MTcyNTM2OTEyMX0.W78-I0MuwwNSXG0fCTMQvj4UuzbBUmh3mkvCdUiDQIg

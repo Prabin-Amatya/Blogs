@@ -30,6 +30,7 @@ mongoose.connect(config.MONGO_URI)
 
 app.use(cors())
 app.use(express.json())
+app.use(middleware.tokenExtractor)
 app.use('/api/users',userRouter)
 app.use('/api/login',loginRouter)
 app.use('/api/blogs',blogRouter)

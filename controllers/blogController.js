@@ -5,18 +5,10 @@ const for_testing = require('../utils/for_testing')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
-const getTokenFrom = (request) =>{
-  const authorization = request.get("authorization")
-  if(authorization && authorization.startsWith("Bearer"))
-    return authorization.replace('Bearer ', "")
-  
-  return null
-}
-
 blogRouter.get('/', async(request, response) => {
      blogs = await Blog.find({}).populate('userId')
      response.status(200).json(blogs)
-  })
+})
 
 blogRouter.get('/:id', async(request, response) => {
   
@@ -51,19 +43,20 @@ blogRouter.get('/mostLikedAuthor', async (request, response) => {
 
 blogRouter.post('/', async (request, response) => {
 
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
   if(!decodedToken.id)
     return response.status(401).json({error: "token invalid"})
-
-  const user = await User.findById(decodedToken.id)
 
   if(!request.body.title || !request.body.url)
     response.status(400).end()
 
   if(!request.body.likes)
     request.body.likes = 0
-  
+
+  const user = await User.findById(decodedToken.id)
+  request.body.userId = user.id
+
   const blog = new Blog(request.body)
   const saved_blog = await  blog.save()
 
@@ -75,12 +68,25 @@ blogRouter.post('/', async (request, response) => {
 
 blogRouter.put('/:id', async (request, response) => {
   const new_blog = await Blog.findByIdAndUpdate(request.params.id, request.body, {new:true} ,{runValidators:true, context:'query'})
-  console.log(new_blog)
   response.status(200).json(new_blog)
 })
 
 blogRouter.delete('/:id', async(request, response) => {
-  const blog = await Blog.findByIdAndDelete(request.params.id)
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  
+  if(!decodedToken.id)
+  {
+    return response.status(400).json({error: "Token Invalid"})
+  }
+  const deleted_blog = await Blog.findByIdAndDelete(request.params.id)
+
+  if(!deleted_blog)
+  {
+    return response.status(400).json({error: "Blog not found"})
+  }
+  const userId = deleted_blog.userId.toString()
+  const user = await User.findById(userId)
+  user.blogIds = user.blogIds.map(blog => blog.id !== deleted_blog.id)
   response.status(204).end()
 })
 
